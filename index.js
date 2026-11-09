@@ -1,4 +1,4 @@
-import express from "express"
+import express, { request, response } from "express"
 import cors from "cors"
 import mysql2 from "mysql2"
 import "dotenv/config"
@@ -13,6 +13,19 @@ const sql = mysql2.createPool({
     user: process.env.USUARIO_BANCO,
     password: process.env.SENHA_BANCO,
     database: process.env.NOME_BANCO
+})
+
+app.get("/", (request, response) => {
+    const comandoSelect = "SELECT * FROM musicas_luan"
+
+    sql.query(comandoSelect, (error, data) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json(data)
+    })
 })
 
 app.listen(3000, () => {
